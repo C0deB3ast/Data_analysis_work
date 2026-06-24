@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "ep-aged-grass-at803svl-pooler.c-9.us-east-1.aws.neon.tech",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "SQL_project_Work",
+            "name": "SQL projects",
+            "username": "neondb_owner"
+        }
+    ]
+}
