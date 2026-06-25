@@ -136,4 +136,4 @@ INSERT INTO transactions (account_id, txn_type, amount, txn_date) VALUES
 SELECT *
 From branches;
 
-TRUNCATE TABLE branches RESTART IDENTITY CASCADE;
+/*TRUNCATE TABLE branches RESTART IDENTITY CASCADE;*/
