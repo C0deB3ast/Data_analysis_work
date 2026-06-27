@@ -32,7 +32,7 @@ Avg(amount) as Avg_loan
 From loan)*/
 
 /*What is the total transaction amount of each branch then find only those branch whoes total transactions is higher than 5 lakh.*/
-WITH more_5lk AS(
+/*WITH more_5lk AS(
 Select
 br.branch_name,
 Sum(trn.amount) AS total_amount 
@@ -47,4 +47,6 @@ br.branch_name
 
 SELECT *
 From more_5lk
-WHERE total_amount > 500000
+WHERE total_amount > 500000 */
+
+/**/
