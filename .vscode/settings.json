@@ -14,6 +14,21 @@
             "database": "SQL_project_Work",
             "name": "SQL projects",
             "username": "neondb_owner"
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "ep-wandering-star-aydw230a-pooler.c-5.us-east-2.aws.neon.tech",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Credit Risk Analysis",
+            "database": "Credit risk analysis",
+            "username": "neondb_owner"
         }
     ]
 }
