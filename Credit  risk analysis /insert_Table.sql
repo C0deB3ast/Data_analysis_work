@@ -13,6 +13,7 @@ CREATE TABLE credit_risk (
     cb_person_cred_hist_length SMALLINT
 );
 
-\copy credit_risk FROM 'credit_risk_dataset.csv' DELIMITER ',' CSV HEADER;
+
 
 SELECT COUNT(*) FROM credit_risk;
+
