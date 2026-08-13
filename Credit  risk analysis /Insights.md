@@ -34,3 +34,18 @@
 - Bank keeps high-DTI lending to a small share of the portfolio (~3.4%), suggesting disciplined income-based underwriting limits.
 - The interest rate premium for high-DTI borrowers is unexpectedly small (0.65 pts) — if pricing were properly risk-adjusted for DTI, the gap should be much larger.
 - This suggests loan_int_rate may be driven primarily by loan_grade rather than loan_percent_income — DTI risk may not be fully priced in independently. Worth testing by comparing high-DTI vs normal-DTI rates *within* the same grade.
+
+## Q2b: DTI Premium Within Grade
+
+**Query logic:** Conditional aggregation (CASE WHEN) comparing avg interest rate 
+for high-DTI (>40%) vs normal-DTI (<=40%) borrowers, within each loan_grade.
+
+**Findings:** Across grades B-G, high-DTI borrowers receive interest rates roughly 
+equal to or even slightly LOWER than normal-DTI borrowers in the same grade.
+
+**Insight:** loan_int_rate is driven almost entirely by loan_grade, not by 
+loan_percent_income (DTI) independently. The earlier observed 0.65pt gap 
+(Q2) was likely a grade-composition effect, not a genuine DTI risk premium — 
+i.e., high-DTI borrowers happen to skew toward riskier grades, but DTI itself 
+isn't separately priced in. This is a potential underpriced-risk gap in the 
+bank's pricing model.
