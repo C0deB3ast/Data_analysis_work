@@ -49,3 +49,38 @@ loan_percent_income (DTI) independently. The earlier observed 0.65pt gap
 i.e., high-DTI borrowers happen to skew toward riskier grades, but DTI itself 
 isn't separately priced in. This is a potential underpriced-risk gap in the 
 bank's pricing model.
+
+## Q3: Home Ownership vs Default
+
+**Query logic:** Grouped by person_home_ownership, calculated default % per category.
+
+**Findings:**
+| Ownership | Total Loans | Default % |
+|-----------|------------|-----------|
+| RENT | 16,446 | 31.6% |
+| OTHER | 107 | 30.8% |
+| MORTGAGE | 13,444 | 12.6% |
+| OWN | 2,584 | 7.5% |
+
+**Insight:** Home ownership status is a strong, low-cost risk signal. Renters 
+default at ~4x the rate of outright owners (31.6% vs 7.5%) and represent the 
+largest portfolio segment. Mortgage-holders default less than renters despite 
+also carrying debt — likely because mortgage approval itself acts as a prior 
+credit-worthiness filter.
+
+## Q4: Credit History Length vs Default
+
+**Findings:**
+| Bucket | Total Loans | Default % |
+|--------|------------|-----------|
+| 0-2 yrs | 5,965 | 23.6% |
+| 3-5 yrs | 13,749 | 22.1% |
+| 6-10 yrs | 9,405 | 20.6% |
+| 10+ yrs | 3,462 | 21.0% |
+
+**Insight:** Default rate broadly decreases with longer credit history but is 
+NOT strictly monotonic — ticks back up slightly at 10+ yrs. Loan volume peaks 
+in the 3-5 yr bucket (bell-curve shape), not a linear increase — reflecting 
+the natural age/tenure distribution of the loan-seeking population. Compared 
+to loan_grade and home_ownership (which show clean monotonic risk gradients), 
+credit history length is a weaker, noisier risk signal on its own.
