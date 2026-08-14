@@ -46,7 +46,7 @@ ORDER BY Def_percent DESC;*/
 
 /*Q4. Credit History Bucket Wise Risk*/
 
-SELECT
+/*SELECT
 Case
 When cb_person_cred_hist_length <=2 Then '0-2 yrs'
 When cb_person_cred_hist_length <=5 Then '3-5 yrs'
@@ -57,5 +57,16 @@ Count(*) As total_loans,
 Round((Sum(loan_status)::numeric /Count(*))*100,1)  AS Def_percent
 From credit_risk
 GROUP BY Hist_Bucket
-ORDER BY Def_percent DESC;
+ORDER BY Def_percent DESC;*/
 
+/*Q5 — Loan intent-wise portfolio concentration:*/
+
+SELECT
+loan_intent,
+Count(*) As total_loans,
+Round(Sum(loan_amnt):: numeric / Sum(Sum(loan_amnt)) OVER()* 100, 1) AS portfolio_share_prt,
+Round((Sum(loan_status)::numeric /Count(*))*100,1)  AS Def_percent
+From credit_risk
+GROUP BY loan_intent
+ORDER BY portfolio_share_prt,
+        Def_percent Desc;

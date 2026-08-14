@@ -84,3 +84,24 @@ in the 3-5 yr bucket (bell-curve shape), not a linear increase — reflecting
 the natural age/tenure distribution of the loan-seeking population. Compared 
 to loan_grade and home_ownership (which show clean monotonic risk gradients), 
 credit history length is a weaker, noisier risk signal on its own.
+
+## Q5: Loan Intent-Wise Portfolio Concentration & Risk
+
+**Findings:**
+| Intent | Total Loans | Portfolio Share % | Default % |
+|--------|------------|-------------------|-----------|
+| DEBTCONSOLIDATION | 5,212 | 16.0% | 28.6% |
+| MEDICAL | 6,071 | 18.0% | 26.7% |
+| HOMEIMPROVEMENT | 3,605 | 12.0% | 26.1% |
+| EDUCATION | 6,453 | 19.6% | 17.2% |
+| PERSONAL | 5,521 | 16.9% | 19.9% |
+| VENTURE | 5,719 | 17.5% | 14.8% |
+
+**Insight:** "Distress-driven" loan purposes (debt consolidation, medical, home 
+improvement) show meaningfully higher default rates (26-29%) than "growth-driven" 
+purposes (venture, education: 15-17%). This likely reflects borrower financial 
+state at time of application rather than the loan purpose itself. VENTURE's low 
+default despite being a "riskier" category on paper may reflect stricter 
+underwriting/collateral requirements for business loans. loan_intent is a 
+usable risk signal not currently reflected in loan_int_rate (which tracks only 
+loan_grade — see Q2b).
