@@ -61,12 +61,25 @@ ORDER BY Def_percent DESC;*/
 
 /*Q5 — Loan intent-wise portfolio concentration:*/
 
-SELECT
+/*SELECT
 loan_intent,
 Count(*) As total_loans,
 Round(Sum(loan_amnt):: numeric / Sum(Sum(loan_amnt)) OVER()* 100, 1) AS portfolio_share_prt,
-Round((Sum(loan_status)::numeric /Count(*))*100,1)  AS Def_percent
+Round((Sum(loan_status)::numeric / Count(*)) *100,1)  AS Def_percent
 From credit_risk
 GROUP BY loan_intent
 ORDER BY portfolio_share_prt,
-        Def_percent Desc;
+        Def_percent Desc;*/
+
+/*Q6 — Rank borrowers by loan amount within each grade*/     
+
+/*SELECT
+loan_grade,
+loan_amnt,
+Rank() OVER (PARTITION BY loan_grade ORDER BY loan_amnt DESC) As borrowers_rnk
+From credit_risk
+ORDER BY loan_grade,
+        borrowers_rnk ;*/
+
+
+        

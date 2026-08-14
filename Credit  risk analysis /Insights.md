@@ -105,3 +105,23 @@ default despite being a "riskier" category on paper may reflect stricter
 underwriting/collateral requirements for business loans. loan_intent is a 
 usable risk signal not currently reflected in loan_int_rate (which tracks only 
 loan_grade — see Q2b).
+
+## Q6: Rank Borrowers by Loan Amount within Grade
+
+**Query logic:** RANK()/DENSE_RANK()/ROW_NUMBER() with PARTITION BY loan_grade, 
+ORDER BY loan_amnt DESC — ranks each borrower's loan size within their own grade.
+
+**Findings:** Within Grade A, many borrowers share the exact same maximum 
+loan_amnt (35,000), causing large tie clusters at rank 1 under RANK().
+
+**Insight:** 
+- The repeated max value across many borrowers suggests a policy-driven loan 
+  amount ceiling (per-grade or portfolio-wide cap) rather than organic variation.
+- This ranking is the basis for concentration-risk monitoring — identifying 
+  the largest exposures within each risk grade (e.g., "top 10 largest loans 
+  per grade") tells the bank not just how many borrowers might default, but 
+  how much ₹ exposure is concentrated in its largest accounts.
+- RANK() vs DENSE_RANK() vs ROW_NUMBER() behave differently on ties: RANK 
+  skips subsequent ranks after a tie, DENSE_RANK doesn't skip, ROW_NUMBER 
+  always assigns unique sequential numbers regardless of ties. ROW_NUMBER is 
+  more useful here for cleanly extracting "top N per grade" without tie inflation.
