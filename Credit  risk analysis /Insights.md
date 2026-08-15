@@ -125,3 +125,46 @@ loan_amnt (35,000), causing large tie clusters at rank 1 under RANK().
   skips subsequent ranks after a tie, DENSE_RANK doesn't skip, ROW_NUMBER 
   always assigns unique sequential numbers regardless of ties. ROW_NUMBER is 
   more useful here for cleanly extracting "top N per grade" without tie inflation.
+
+##  Q6b max amount of every loan grade
+अगर ceiling grade-specific होती (जैसे A को ज़्यादा मिलता, G को कम), तो वो एक risk-based lending limit होता — logical, क्योंकि safe borrower को ज़्यादा भरोसा। पर यहाँ सबको same flat cap मिल रहा है, चाहे risk कुछ भी हो — ये दिखाता है कि ये शायद:
+
+एक product-level constraint है (जैसे ये एक specific "small-ticket personal loan" product है, जिसकी design ही 35,000 max की है — bank का कोई अलग बड़ा-ticket product अलग होगा)
+या एक regulatory/operational limit (unsecured lending पर एक ceiling, risk grade से independent)
+
+## Q7: Grades with Above-Average Default Rate
+
+**Query logic:** Subquery computing overall portfolio avg default rate, 
+outer query using HAVING to filter grades exceeding it.
+
+**Findings:** Grades D, E, F, G all exceed the portfolio average (~21.8%):
+D: 59.0%, E: 64.4%, F: 70.5%, G: 98.4%
+
+**Insight:** There's a sharp "risk cliff" between C (20.7%) and D (59.0%) — 
+nearly a 3x jump — rather than a smooth gradient. This suggests the bank's 
+risk tiers aren't evenly spaced in terms of actual outcome risk; D-G should 
+likely be treated as a distinct high-risk tier requiring stricter underwriting, 
+not just "slightly worse" than A-C.
+
+## Q8: Running Total of Loan Amount by Grade
+
+**Query logic:** CTE for grade-wise totals, then SUM() OVER (ORDER BY loan_grade) 
+for cumulative running total.
+
+**Findings:**
+| Grade | Grade Total (₹) | Running Total (₹) |
+|-------|-----------------|--------------------|
+| A | 92,027,750 | 92,027,750 |
+| B | 104,462,800 | 196,490,550 |
+| C | 59,503,125 | 255,993,675 |
+| D | 39,339,350 | 295,333,025 |
+| E | 12,450,875 | 307,783,900 |
+| F | 3,546,875 | 311,330,775 |
+| G | 1,100,525 | 312,431,300 |
+
+**Insight:** A+B grades alone account for ~63% of total portfolio value, while 
+D-G (the high-default-rate grades from Q7) together make up only ~18%. This 
+confirms that high default RATE in D-G doesn't translate to proportional 
+₹ exposure — the bank's actual financial risk is more contained than the raw 
+default percentages alone would suggest. Count-based and value-based risk 
+views tell different stories and both are needed for a full picture.

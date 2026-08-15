@@ -4,7 +4,6 @@ SELECT
 loan_grade,
 Count(*) As total_loans,
 Round((Sum(loan_status)::numeric /Count(*))*100,1)  AS Def_percent
-
 From credit_risk
 GROUP BY loan_grade
 ORDER BY Def_percent DESC;
@@ -80,6 +79,36 @@ Rank() OVER (PARTITION BY loan_grade ORDER BY loan_amnt DESC) As borrowers_rnk
 From credit_risk
 ORDER BY loan_grade,
         borrowers_rnk ;*/
+/*Verfication of Q6b max amount of every loan grade */
+/*SELECT 
+loan_grade,
+Max(loan_amnt)
+FROM credit_risk
+GROUP BY loan_grade*/
 
+/*Q7 — Subquery, above-average default rate grades*/
+/*SELECT
+loan_grade,
+Round(Sum(loan_status)::numeric / Count(*)*100,1) as Def_rate
+From credit_risk
+GROUP BY loan_grade
+HAVING (Sum(loan_status)::numeric / Count(*))*100 > 
+(SELECT
+Round(Avg(loan_status)::numeric*100,1) as Avg_Def_rate
+FROM credit_risk)
+ORDER by Def_rate*/
 
-        
+/*Q8 — Running total of loan amount by grade (cumulative)*/
+/*WITH grade_grand_total AS (
+SELECT
+loan_grade,
+Sum(loan_amnt) As grade_total
+From credit_risk
+GROUP BY loan_grade
+)
+SELECT
+loan_grade,
+grade_total,
+Sum(grade_total) OVER (ORDER by loan_grade) AS running_total
+From grade_grand_total
+ORDER BY loan_grade*/
