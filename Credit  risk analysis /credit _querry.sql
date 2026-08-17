@@ -114,7 +114,7 @@ From grade_grand_total
 ORDER BY loan_grade*/
 
 /*Q9- : Average Interest rate compared to previous grade*/
-WITH grade_avg_loan_int_rate As (
+/*WITH grade_avg_loan_int_rate As (
 SELECT
 loan_grade,
 Avg(loan_int_rate) As avg_loan_int_rate
@@ -127,5 +127,7 @@ avg_loan_int_rate,
 Lag(avg_loan_int_rate) OVER(ORDER BY loan_grade) As prev_AVG_loan_int_rate
 From grade_avg_loan_int_rate
 ORDER BY loan_grade
+*/
 
+/*Q10 — COALESCE/NULL handling:*/
         

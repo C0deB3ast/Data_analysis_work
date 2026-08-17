@@ -168,3 +168,26 @@ confirms that high default RATE in D-G doesn't translate to proportional
 ₹ exposure — the bank's actual financial risk is more contained than the raw 
 default percentages alone would suggest. Count-based and value-based risk 
 views tell different stories and both are needed for a full picture.
+
+## Q9: Interest Rate vs Previous Grade (LAG)
+
+**Query logic:** CTE for grade-wise avg interest rate, then LAG() OVER 
+(ORDER BY loan_grade) to bring the previous grade's rate alongside each row.
+
+**Findings:**
+| Grade | Avg Rate | Prev Grade Rate | Step Increase |
+|-------|----------|-----------------|----------------|
+| A |     7.33     |        NULL     |            -   |
+| B |     11.00    |        7.33     |          +3.67 |
+| C |     13.46    |        11.00    |          +2.46 |
+| D |     15.36    |        13.46    |          +1.90 |
+| E |     17.01    |        15.36    |          +1.65 |
+| F |     18.61    |        17.01    |          +1.60 |
+| G |     20.25    |        18.61    |          +1.64 |
+
+**Insight:** Interest rate increases strictly monotonically from A to G with 
+zero exceptions — confirming loan_int_rate is derived almost purely from 
+loan_grade. The step-size between grades shrinks and flattens after C 
+(3.67 → 2.46 → ~1.6-1.9 for D-G), meaning pricing differentiates more 
+aggressively among "safe" grades (A-C) than among "risky" ones (D-G) — despite 
+D-G having far more default-rate variance among themselves (Q7: 59% to 98%).
