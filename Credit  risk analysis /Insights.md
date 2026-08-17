@@ -5,13 +5,13 @@
 **Findings:**
 | Grade | Total Loans | Default % |
 |-------|------------ |-----------|
-| A |       10,777        10.0% |
-| B |       10,451        16.3% |
-| C |       6,458         20.7% |
-| D |       3,626         59.0% |
-| E |       964           64.4% |
-| F |       241           70.5% |
-| G |       64            98.4% |
+| A |       10,777        |10.0% |
+| B |       10,451        |16.3% |
+| C |       6,458         |20.7% |
+| D |       3,626         |59.0% |
+| E |       964           |64.4% |
+| F |       241           |70.5% |
+| G |       64            |98.4% |
 
 **Insights:**
 - Loan grade is a strong predictor of default — near-linear increase in default rate from A (10%) to G (98.4%).
