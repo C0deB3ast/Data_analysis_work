@@ -137,7 +137,7 @@ From credit_risk
  SELECT COUNT(*) FROM credit_risk WHERE person_emp_length IS NULL;*/       
 
 /*Q10b: Self-join: Similar-sized loans within same grade*/
-WITH Similar_sized_loans As (
+/*WITH Similar_sized_loans As (
 SELECT
 loan_grade,
 loan_amnt,
@@ -154,4 +154,4 @@ From Similar_sized_loans sl
 JOIN Similar_sized_loans cr on sl.loan_grade = cr.loan_grade 
                 And sl.row_id < cr.row_id
 Where ABS(sl.loan_amnt - cr.loan_amnt) <=500
-LIMIT 50;
+LIMIT 50;*/
