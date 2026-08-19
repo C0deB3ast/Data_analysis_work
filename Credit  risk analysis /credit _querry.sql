@@ -130,4 +130,28 @@ ORDER BY loan_grade
 */
 
 /*Q10 — COALESCE/NULL handling:*/
-        
+/*Select 
+COALESCE(person_emp_length) as non_null_emp_length
+From credit_risk
+
+ SELECT COUNT(*) FROM credit_risk WHERE person_emp_length IS NULL;*/       
+
+/*Q10b: Self-join: Similar-sized loans within same grade*/
+WITH Similar_sized_loans As (
+SELECT
+loan_grade,
+loan_amnt,
+ROW_NUMBER() OVER() AS row_id
+From credit_risk
+)
+SELECT
+sl.row_id as borrower_a,
+sl.loan_amnt as amount_a,
+cr.row_id as borrower_b,
+cr.loan_amnt as amount_b,
+sl.loan_grade
+From Similar_sized_loans sl
+JOIN Similar_sized_loans cr on sl.loan_grade = cr.loan_grade 
+                And sl.row_id < cr.row_id
+Where ABS(sl.loan_amnt - cr.loan_amnt) <=500
+LIMIT 50;

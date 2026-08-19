@@ -191,3 +191,31 @@ loan_grade. The step-size between grades shrinks and flattens after C
 (3.67 → 2.46 → ~1.6-1.9 for D-G), meaning pricing differentiates more 
 aggressively among "safe" grades (A-C) than among "risky" ones (D-G) — despite 
 D-G having far more default-rate variance among themselves (Q7: 59% to 98%).
+
+## Q10: NULL Handling — COALESCE on person_emp_length
+
+**Query logic:** COALESCE(person_emp_length, 0) to replace NULLs with 0, 
+verified against COUNT(*) WHERE person_emp_length IS NULL = 895.
+
+**Insight:** Replacing NULL employment length with 0 is a modeling assumption, 
+not a neutral default — it implicitly treats "unknown" as "zero experience," 
+which may not be true (NULL likely means missing data, not no employment). 
+Using 0 is reasonable for COUNT-based analysis but would bias any AVG/mean 
+calculation downward. A more careful approach might use median imputation or 
+an explicit "unknown" flag depending on what the downstream analysis needs.
+
+## Q10b: Self-Join — Similar-Sized Loans Within Grade
+
+**Query logic:** Self-join on a ROW_NUMBER()-generated surrogate id, matching 
+same-grade pairs with loan_amnt difference <= 500.
+
+**Findings:** Technically correct but low-value here — because Q6 showed a 
+hard loan_amnt ceiling (35,000) shared by thousands of borrowers, most "similar 
+pairs" are just borrowers sitting at the same capped maximum, not genuinely 
+comparable risk profiles.
+
+**Insight:** This analysis technique is only meaningful on datasets where the 
+target metric varies naturally/continuously. A capped or heavily-clustered 
+value (like this dataset's loan ceiling) breaks the premise of "similarity" — 
+everyone at the cap looks identical. Good practice to check value distribution 
+before running a similarity-style self-join.
