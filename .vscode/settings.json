@@ -29,6 +29,24 @@
             "name": "Credit Risk Analysis",
             "database": "Credit risk analysis",
             "username": "neondb_owner"
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "sshOptions": {
+                "port": 22
+            },
+            "driver": "PostgreSQL",
+            "name": "Give me some credit",
+            "database": "Give me some credit",
+            "username": "neondb_owner",
+            "connectString": "postgresql://neondb_owner:npg_vxUyYASlq18H@ep-fancy-king-a5v9vquq-pooler.us-east-2.aws.neon.tech/Give%20me%20some%20credit?sslmode=require&channel_binding=require"
         }
     ]
 }
